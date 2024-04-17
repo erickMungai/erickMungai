@@ -1,34 +1,55 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Picture</title>
-        <link rel="stylesheet" href="pic.css">
-    </head>
-    <body>
-        <div>
-           <video id="vid"></video>
-        </div>
-        <input id="takepic" type="button" value="Take Picture">
-        <input id="save" type="button" value="Save Image">
-        <script>
-            let video = document.getElementById("vid")
-            let mediaDevices = navigator.mediaDevices
-            let muted = true
-            const btn = document.getElementById("takepic")
-            function getPic(){
-                mediaDevices.getUserMedia({
-                    video:true,
-                    audio:true
-                })
-                .then((stream) =>{
+
+<head>
+    <title>Picture</title>
+    <link rel="stylesheet" href="pic.css">
+</head>
+
+<body>
+    <div>
+        <video id="vid"></video>
+    </div>
+    <input id="takepic" type="button" value="Take Picture">
+    <input id="save" type="button" value="Save Image">
+    <canvas id="canvas" style="display: none;"></canvas>
+    <script>
+        let video = document.getElementById("vid")
+        let mediaDevices = navigator.mediaDevices
+        let muted = true
+        const btn = document.getElementById("takepic")
+        const btn2 = document.getElementById("save")
+
+        function getPic() {
+            mediaDevices.getUserMedia({
+                video: true,
+                audio: true
+            })
+                .then((stream) => {
                     video.srcObject = stream;
-                    video.addEventListener("loadedmetadata",()=>{
+                    video.addEventListener("loadedmetadata", () => {
                         video.play()
                     })
                 })
                 .catch(alert)
-            }
-            btn.addEventListener("click",getPic)
-        </script>
-    </body>
+        }
+        function takePicture() {
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+        }
+        function saveImage() {
+            takePicture();
+            let dataURL = canvas.toDataURL('image/png');
+            let a = document.createElement('a');
+            a.href = dataURL;
+            a.download = 'snapshot.png';
+            a.click();
+        }
+
+        btn.addEventListener("click", getPic)
+        btn.addEventListener("click", saveImage)
+    </script>
+</body>
+
 </html>
