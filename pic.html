@@ -8,17 +8,18 @@
 
 <body>
     <div>
-        <video id="vid"></video>
+        <video id="vid" autoplay muted></video> <!-- Added 'autoplay' and 'muted' attributes -->
     </div>
     <input id="takepic" type="button" value="Take Picture">
     <input id="save" type="button" value="Save Image">
     <canvas id="canvas" style="display: none;"></canvas>
     <script>
-        let video = document.getElementById("vid")
-        let mediaDevices = navigator.mediaDevices
-        let muted = true
-        const btn = document.getElementById("takepic")
-        const btn2 = document.getElementById("save")
+        let video = document.getElementById("vid");
+        let canvas = document.getElementById("canvas"); // Added canvas declaration
+        let context = canvas.getContext("2d"); // Added context declaration
+        let mediaDevices = navigator.mediaDevices;
+        const btn = document.getElementById("takepic");
+        const btn2 = document.getElementById("save");
 
         function getPic() {
             mediaDevices.getUserMedia({
@@ -47,8 +48,8 @@
             a.click();
         }
 
-        btn.addEventListener("click", getPic)
-        btn.addEventListener("click", saveImage)
+        btn.addEventListener("click", getPic);
+        btn2.addEventListener("click", saveImage); // Changed event listener to btn2 for saveImage
     </script>
 </body>
 
