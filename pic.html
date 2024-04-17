@@ -5,11 +5,27 @@
         <link rel="stylesheet" href="pic.css">
     </head>
     <body>
+        <div>
+           <video id="vid"></video>
+        </div>
         <input id="takepic" type="button" value="Take Picture">
         <script>
+            let video = document.getElementById("vid")
+            let mediaDevices = navigator.mediaDevices
+            let muted = true
             const btn = document.getElementById("takepic")
             function getPic(){
-                alert("its working")
+                mediaDevices.getUserMedia({
+                    video:true,
+                    audio:true
+                })
+                .then((stream) =>{
+                    video.srcObject = stream;
+                    video.addEventListener("loadedmetadata",()=>{
+                        video.play()
+                    })
+                })
+                .catch(alert)
             }
             btn.addEventListener("click",getPic)
         </script>
